@@ -1,28 +1,20 @@
-const pancakeSort = (arr) => {
-  const flip = (arr, k) => {
-    let i = 0;
-    while (i < k / 2) {
-      [arr[i], arr[k - i]] = [arr[k - i], arr[i]];
-      i++;
+function zigzagLevelOrder(root) {
+  if (!root) return [];
+  const result = [];
+  const queue = [root];
+  let zigzag = false;
+  while (queue.length) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      if (zigzag) currentLevel.unshift(node.val);
+      else currentLevel.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
-  };
-  const findMaxIndex = (arr, n) => {
-    let maxIndex = 0;
-    for (let i = 0; i < n; i++) {
-      if (arr[i] > arr[maxIndex]) {
-        maxIndex = i;
-      }
-    }
-    return maxIndex;
-  };
-  let currentSize = arr.length;
-  while (currentSize > 1) {
-    const maxIndex = findMaxIndex(arr, currentSize);
-    if (maxIndex !== currentSize - 1) {
-      flip(arr, maxIndex);
-      flip(arr, currentSize - 1);
-    }
-    currentSize--;
+    result.push(currentLevel);
+    zigzag = !zigzag;
   }
-  return arr;
-};
+  return result;
+}
